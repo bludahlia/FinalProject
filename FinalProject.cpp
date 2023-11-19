@@ -11,7 +11,6 @@ int width = 800;
 int cells = 4800;
 int init = 0;
 
-int t = 0;
 bool G1[80][60];
 bool G2[80][60];
 
@@ -101,7 +100,6 @@ void update(bool G1[80][60], bool G2[80][60]) {
 		}
 	}
 }
-
 
 int main() {
 	RenderWindow window(VideoMode(1920, 1080), "Final Project");
