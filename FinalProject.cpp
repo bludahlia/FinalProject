@@ -10,14 +10,16 @@ int height = 600;
 int width = 800;
 int cells = 480;
 int init = 0;
-int secretPauseX = rand() % 80;
-int secretPauseY = rand() % 60;
+int secretPauseX;
+int secretPauseY;
 int pause = 0;
 
 bool G1[80][60];
 bool G2[80][60];
 
 void generate() {
+	secretPauseX = rand() % 80;
+	secretPauseY = rand() % 60;
 	for (int i = 0; i < cells; i++) {
 		int x = rand() % 80;
 		int y = rand() % 60;
