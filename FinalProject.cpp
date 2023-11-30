@@ -8,8 +8,11 @@ using namespace std;
 
 int height = 600;
 int width = 800;
-int cells = 4800;
+int cells = 480;
 int init = 0;
+int secretPauseX = rand() % 80;
+int secretPauseY = rand() % 60;
+int pause = 0;
 
 bool G1[80][60];
 bool G2[80][60];
@@ -28,7 +31,23 @@ void drawGrid(RenderWindow& window) {
 			if (G1[x][y] == 1) {
 				RectangleShape cell(Vector2f(10, 10));
 				cell.setPosition(x * 10, y * 10);
-				cell.setFillColor(Color::Black);
+				cell.setFillColor(Color(0,255,255));
+				window.draw(cell);
+			}
+			else {
+				RectangleShape cell(Vector2f(10, 10));
+				cell.setPosition(x * 10, y * 10);
+				cell.setFillColor(Color(0,128,128));
+				window.draw(cell);
+			}
+			if (x == secretPauseX && y == secretPauseY) {
+				RectangleShape cell(Vector2f(10, 10));
+				cell.setPosition(x * 10, y * 10);
+				if (G1[x][y] == 1)
+					cell.setFillColor(Color(255,0,0));
+				else if (G1[x][y] == 0) {
+					cell.setFillColor(Color(3, 168, 168));
+				}
 				window.draw(cell);
 			}
 		}
@@ -64,7 +83,7 @@ int neighbors(bool G[80][60], int x, int y) {
 	return neighbors;
 }
 
-bool rule(int n, bool lod, int x, int y) {
+bool rule(int n, bool lod) {
 	if (lod == 1) {
 		if (n < 2) {
 			return false;
@@ -89,7 +108,7 @@ bool rule(int n, bool lod, int x, int y) {
 void update(bool G1[80][60], bool G2[80][60]) {
 	for (int x = 0; x < 80; x++) {
 		for (int y = 0; y < 60; y++) {
-			G2[x][y] = rule(neighbors(G1, x, y), G1[x][y], x, y);
+			G2[x][y] = rule(neighbors(G1, x, y), G1[x][y]);
 		}
 	}
 	for (int x = 0; x < 80; x++) {
@@ -102,7 +121,7 @@ void update(bool G1[80][60], bool G2[80][60]) {
 }
 
 int main() {
-	RenderWindow window(VideoMode(1920, 1080), "Final Project");
+	RenderWindow window(VideoMode(800, 600), "Final Project");
 	window.setFramerateLimit(30);
 
 	while (true) {
@@ -111,9 +130,15 @@ int main() {
 			init = 1;
 		}
 		else {
-			update(G1,G2);
+			update(G1, G2);
 			drawGrid(window);
 		}
-		window.clear(Color::White);
+		window.display();
+		if (pause < 10) {
+			if (G1[secretPauseX][secretPauseY] == 1) {
+				sleep(seconds(1));
+				pause++;
+			}
+		}
 	}
 }
