@@ -136,9 +136,10 @@ int main() {
 			drawGrid(window);
 		}
 		window.display();
-		if (pause < 10) {
+		if (pause < 5) {
 			if (G1[secretPauseX][secretPauseY] == 1) {
 				sleep(seconds(1));
+				generate();
 				pause++;
 			}
 		}
